@@ -1,0 +1,331 @@
+{% load static %}
+{% static "images" as baseUrl %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+	<title>PV Monitoring System</title>
+
+	<!-- Loading third party fonts -->
+	<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+	<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Loading main css file -->
+	<link rel="stylesheet" href="{% static 'css/style1.css' %}">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"
+		integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js">
+	</script>
+	<style>
+		body{
+		  font-size: 18px;
+		}
+		.card1 {
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			max-width: 300px;
+			margin: auto;
+			text-align: center;
+			font-family: arial;
+		  }
+		  
+		  .title {
+			color: grey;
+		  }
+		  
+		  button {
+			border: none;
+			outline: 0;
+			display: inline-block;
+			padding: 8px;
+			color: white;
+			background-color: #000;
+			text-align: center;
+			cursor: pointer;
+			width: 100%;
+		  }
+		  
+		  a {
+			text-decoration: none;
+			font-size: 22px;
+			color: black;
+		  }
+		  
+		  button:hover, a:hover {
+			opacity: 0.7;
+		  }
+		  .cards{
+			height:300px;
+			display: block;
+			overflow-y:scroll;
+			scroll-behavior:smooth;
+		  }
+	  </style>
+</head>
+
+
+<body>
+
+	<!-- Header  -->
+	<div class="header" style="font-size: 1px;">
+		<div class="site-content">
+			<div class="site-header">
+				<div class="container">
+					<a href="index.html" class="branding">
+						<img src="{% static 'images/logo.png' %}" alt="" class="logo">
+						<div class="logo-type">
+							<h1 class="site-title" style="font-size: 18px;">Solareo</h1>
+							<small class="site-description">PV Solar cells</small>
+						</div>
+					</a>
+
+					<!-- Default snippet for navigation -->
+					<div class="main-navigation">
+						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+						<ul class="menu">
+							<li class="menu-item" style="font-size: 18px;"><a href="/">Home</a></li>
+							<li class="menu-item current-menu-item" style="font-size: 18px;"><a href="overview">Overview</a></li>
+							<li class="menu-item"><a href="analysis" style="font-size: 18px;">Analysis</a></li>
+							<li class="menu-item"><a href="report" style="font-size: 18px;">Report</a></li>
+							<!-- <li class="menu-item"><a href="about.html">Report</a></li> -->
+							<li class="menu-item"><a href="contact" style="font-size: 18px;">Contact</a></li>
+
+						</ul> <!-- .menu -->
+					</div> <!-- .main-navigation -->
+
+					<div class="mobile-navigation"></div>
+
+				</div>
+			</div> <!-- .site-header -->
+
+		</div>
+	</div>
+	<!-- End Header -->
+
+	<!-- Main Section -->
+	<div id="main">
+		<h1>Overview</h1>
+		{% if user.is_authenticated %}
+		<div class="card1">
+			<img src="{%static 'images/user.jpg' %}" alt="John" style="width:100%">
+			<h1>{{user.first_name}}</h1>
+			<p class="title">Email: {{user.email}}</p>
+			<p>Joined on {{user.date_joined}}</p>
+			<div style="margin: 24px 0;">
+			  <a href="#"><i class="fab fa-facebook-f"></i></a>
+			  <a href="#"><i class="fab fa-twitter"></i></a>  
+			  <a href="#"><i class="fab fa-instagram"></i></a>  
+			  <a href="#"><i class="fab fa-linkedin"></i></a> 
+			</div>
+		  </div>
+		  {% endif %}
+		<div id="box" style="background: url({% static 'images/leaf.jpg' %});justify-content: center;
+        align-items: center; background-position: center;background-size: cover;">
+			<!-- Overview -->
+			<div id="top">
+				<!-- Performance Monitoring -->
+				<div class="monitor">
+					<div class="head">
+						<div class="monitors">
+							<h2>Performance Monitoring </h2>
+						</div>
+						<div class="sun">
+							<i class="fa-solid fa-sun fa-xl" style="color:yellow;"></i>
+							<h3>32°C</h3>
+						</div>
+					</div>
+					<!-- Middle total charging -->
+					<div class="mid">
+						<div class="left">
+							<div class="charge">
+								<i class="fa fa-circle fa-xs" style="color: green;"></i>
+								<h3>Total Charging</h3>
+							</div>
+							<div class="kwh">
+								<h1>80.88 <sup>KWH</sup></h1>
+							</div>
+							<div class="minmax">
+								<div class="min">
+									<h3>Min</h3>
+									<b>
+										<p style="color: red;">3.0</p>
+									</b>
+									<i class="fa fa-caret-down"></i>
+								</div>
+								<div class="max">
+									<h3>Max</h3>
+									<b>
+										<p style="color: green;">10.0</p>
+									</b>
+									<i class="fa fa-caret-up"></i>
+								</div>
+							</div>
+							<!-- Power Usage -->
+							<div class="usage">
+								<i class="fa fa-circle fa-xs" style="color: yellow;"></i>
+								<h3>Power Usage</h3>
+							</div>
+							<div class="kwh">
+								<h1>17.05 <sup>KWH</sup></h1>
+							</div>
+							<div class="minmax">
+								<h3>1 hour usage 6.8 kWh</h3>
+							</div>
+						</div>
+						<div class="right">
+							<div class="solar">
+								<img src="{% static 'images/solar1.jpg' %}" alt="">
+							</div>
+							<div class="yeild">
+								<i class="fas fa-battery-full fa-xl" style="color: green;"></i>
+								<div class="capacity">
+									<div>Capacity</div>
+									<div>220.0kWh</div>
+								</div>
+								<i class="fas fa-charging-station fa-xl" style="color: green; margin-right:22px;"></i>
+								<div class="total">
+									<div>Total Yeild</div>
+									<div>175.0kWh</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- Energy Generation -->
+
+				</div>
+				<div class="generate" id="chart">
+					<div class="day">
+						<h1>Energy Generation</h1>
+						<h3>Today</h3>
+					</div>
+					<canvas id="myChart1"></canvas>
+				</div>
+			</div>
+			<!-- Energy Production -->
+			<div class="bottom">
+				<!-- Left One Graph -->
+				<div class="eleft">
+					<div class="prod">
+						<h2>Energy Production</h2>
+						<div class="bolt">
+							<i class="fa-solid fa-bolt" style="color: yellow;"></i>
+							<h4>200kWh</h4>
+						</div>
+						<div class="select">
+							<select class="box" style="border: none;" onchange="timeFrame(this)">
+								<option value="day">Daily</option>
+								<option value="week">Weekly</option>
+								<option value="month">Monthly</option>
+							</select>
+						</div>
+					</div>
+					<!-- Energy Production graph -->
+					<div class="graph1" id="chart1">
+						<canvas id="myChart"></canvas>
+					</div>
+				</div>
+				<!-- Right One Display  -->
+				<!-- Solar Panel Points -->
+				<div class="eright">
+					<div class="d-inline-flex" style="display:flex;">
+						<h2>Solar Panel Points </h2>&nbsp;&nbsp;<h2 style="color: green;">
+							<p>(12)</p>
+						</h2>
+					</div>
+					<div class="sort">
+						<i class="fa fa-sliders fa-xl"></i>
+						<select class="box1">
+							<option value="by">Sort By</option>
+							<option value="new">Oldest</option>
+							<option value="old">Newest</option>
+						</select>
+						<input placeholder="Select Date" type="text" onfocus="(this.type = 'date')">
+					</div><br>
+					<div class="cards">
+						{%for point in points%}
+						<div class="card" style="width: 40rem;">
+							<div class="card-body">
+							  <h2 class="card-title">UID: {{point.uid}}</h2>
+							</div>
+							<ul class="list-group list-group-flush">
+							  <li class="list-group-item">Location: {{point.area}}</li>
+							  <li class="list-group-item">Voltage: {{point.voltage}}</li>
+							  <li class="list-group-item">Current: {{point.current}}</li>
+							  <li class="list-group-item">Energy: {{point.energy}}</li>
+							</ul>
+							<div class="card-body">
+							  <a href="report" class="card-link">For more info. << Click here</a>
+							  {% comment %} <a href="#" class="card-link">Another link</a> {% endcomment %}
+							</div>
+						  </div><br>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="back-frem">
+        <div class="back-change" onclick="background1()"><img src="{% static 'images/leaf.jpg' %}" alt="" srcset=""></div>
+        <div class="back-change" onclick="background2()"><img src="{% static 'images/space.jpg' %}" alt="" srcset=""></div>
+        <div class="back-change" onclick="background3()"><img src="{% static 'images/wind.jpg' %}" alt="" srcset=""></div>
+    </div>
+	
+	<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	<script src="{% static 'js/plugins.js' %}"></script>
+	<script src="{% static 'js/app.js' %}"></script>
+	<script src="{% static 'js/dash.js' %}"></script>
+	<script>
+		function background1() {
+			document.getElementById('box').style.background = "url('./static/images/leaf.jpg') center center / cover";
+		  }
+		
+		  function background2() {
+			document.getElementById('box').style.background = "url('./static/images/space.jpg') center center / cover";
+		  }
+		
+		  function background3() {
+			document.getElementById('box').style.background = "url('./static/images/wind.jpg') center center / cover";
+		  }
+		const myChart1 = new Chart(
+			document.getElementById('myChart1'),
+			configup
+		);
+
+		const myChart = new Chart(
+			document.getElementById('myChart'),
+			config
+		);
+
+		function timeFrame(period) {
+			console.log(period.value)
+			if (period.value == 'day') {
+				myChart.config.options.scales.x.time.unit = period.value;
+				myChart.config.data.datasets[0].data = day;
+			}
+			if (period.value == 'week') {
+				myChart.config.options.scales.x.time.unit = period.value;
+				myChart.config.data.datasets[0].data = week;
+			}
+			if (period.value == 'month') {
+				myChart.config.options.scales.x.time.unit = period.value;
+				myChart.config.data.datasets[0].data = month;
+			}
+
+			myChart.update();
+		}
+	</script>
+
+</body>
+
+</html>

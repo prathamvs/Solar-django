@@ -1,0 +1,320 @@
+{% load static %}
+{% static "images" as baseUrl %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+    <title>PV Monitoring System</title>
+
+    <!-- Loading third party fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+    <link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Loading main css file -->
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"
+        integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js">
+    </script>
+
+    <style>
+        body{
+            font-size:18px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- Header  -->
+    <div class="header">
+        <div class="site-content">
+            <div class="site-header">
+                <div class="container">
+                    <a href="index.html" class="branding">
+                        <img src="{% static 'images/logo.png' %}" alt="" class="logo">
+                        <div class="logo-type">
+                            <h1 class="site-title">Solareo</h1>
+                            <small class="site-description">PV Solar cells</small>
+                        </div>
+                    </a>
+
+                    <!-- Default snippet for navigation -->
+                    <div class="main-navigation">
+                        <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+                        <ul class="menu">
+                            <li class="menu-item"><a href="/">Home</a></li>
+                            <li class="menu-item "><a href="overview">Overview</a></li>
+                            <li class="menu-item "><a href="analysis">Analysis</a></li>
+                            <li class="menu-item current-menu-item"><a href="report">Report</a></li>
+                            <!-- <li class="menu-item"><a href="about.html">Report</a></li> -->
+                            <li class="menu-item"><a href="contact">Contact</a></li>
+
+                        </ul> <!-- .menu -->
+                    </div> <!-- .main-navigation -->
+
+                    <div class="mobile-navigation"></div>
+
+                </div>
+            </div> <!-- .site-header -->
+
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Main -->
+    <div id="main1">
+        <h1 style="color: black;">Report</h1>
+        <div id="box1" style="background: url({% static 'images/leaf.jpg' %});justify-content: center;
+        align-items: center; background-position: center;background-size: cover;">
+
+            <!-- Download Data -->
+            <div class="download">
+                <div class="table1">
+                    {%for data in datas%}
+                    <!-- Area 1 -->
+                    <table id="table1">
+                        <div class="areas">
+                            <i class="fa-solid fa-solar-panel fa-xl" style="color: green;"></i>
+                            <h1>{{data.area}}</h1>
+
+                        </div>
+                        <thead>
+                            <tr >
+                                <th>DC Voltage(V)</th>
+                                <th>AC Voltage(V)</th>
+                                <th>DC Current(A)</th>
+                                <th>AC Current(A)</th>
+                                <th>DC Power(kW)</th>
+                                <th>AC Power(kW)</th>
+                                <th>Energy Today(kWh)</th>
+                                <th>Current Status</th>
+                                <th>Irradiance Diagnosis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{data.DCvolt}}</td>
+                                <td>{{data.ACvolt}}</td>
+                                <td>{{data.DCcurrent}}</td>
+                                <td>{{data.ACcurrent}}</td>
+                                <td>{{data.DCPower}}</td>
+                                <td>{{data.ACpower}}</td>
+                                <td>{{data.energy}}</td>
+                                <td>{{data.current}}</td>
+                                <td>{{data.irradiance}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br><br><br>
+                    {%endfor%}
+                    {% comment %} <div class="qanda">
+                        <i class="fa-sharp fa-solid fa-circle-plus fa-2xl" onclick="myFunction()"
+                            style="color:black;"></i><br>
+                        <form action="" id="form" style="display:none ;">
+                            <input type="text" id="question" placeholder="What was error?" style="border: none;"><br>
+                            <textarea id="answer" cols="50" rows="5" placeholder="How it was solved?"></textarea><br>
+                            <button type="submit" style="border: none;">ADD</button>
+                        </form>
+                    </div> {% endcomment %}
+                    <!-- Area 2 -->
+                    {% comment %} <table id="table1">
+                        <div class="areas">
+                            <i class="fa-solid fa-solar-panel fa-xl" style="color: rgb(67, 251, 67);"></i>
+                            <h1>Area 2</h1>
+                            <i class="fa fa-angle-down fa-2xl" id="show1" onclick="graph2()" style="color: rgb(8, 238, 54);cursor:pointer;
+                            position:absolute;right:180px;"></i>
+                        </div>
+                        <thead>
+                            <tr>
+                                <th>DC Voltage(V)</th>
+                                <th>AC Voltage(V)</th>
+                                <th>DC Current(A)</th>
+                                <th>AC Current(A)</th>
+                                <th>DC Power(kW)</th>
+                                <th>AC Power(kW)</th>
+                                <th>Energy Today(kWh)</th>
+                                <th>Current Status</th>
+                                <th>Irradiance Diagnosis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>136.7</td>
+                                <td>--</td>
+                                <td>15.3</td>
+                                <td>--</td>
+                                <td>2.1</td>
+                                <td>1.9</td>
+                                <td>5.6</td>
+                                <td>Normal</td>
+                                <td>Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="graph2" style="display:none ;">
+                        <div class="bottom1" id="chart2">
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                    <br><br><br> {% endcomment %}
+                    <!-- Area 3 -->
+                    {% comment %} <table id="table1">
+                        <div class="areas">
+                            <i class="fa-solid fa-solar-panel fa-xl" style="color: rgb(67, 251, 67);"></i>
+                            <h1>Area 3</h1>
+                            <i class="fa fa-angle-down fa-2xl" id="show1" onclick="graph3()" style="color: rgb(8, 238, 54);cursor:pointer;
+                            position:absolute;right:180px;"></i>
+                        </div>
+                        <thead>
+                            <tr>
+                                <th>DC Voltage(V)</th>
+                                <th>AC Voltage(V)</th>
+                                <th>DC Current(A)</th>
+                                <th>AC Current(A)</th>
+                                <th>DC Power(kW)</th>
+                                <th>AC Power(kW)</th>
+                                <th>Energy Today(kWh)</th>
+                                <th>Current Status</th>
+                                <th>Irradiance Diagnosis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>13.7</td>
+                                <td>--</td>
+                                <td>15.3</td>
+                                <td>--</td>
+                                <td>2.1</td>
+                                <td>1.9</td>
+                                <td>5.6</td>
+                                <td>Normal</td>
+                                <td>Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="graph3" style="display:none ;">
+                        <div class="bottom1" id="chart3">
+                            <canvas id="myChart3"></canvas>
+                        </div>
+                    </div>
+                    <br><br><br> {% endcomment %}
+                    <!-- Table 4 -->
+
+                    {% comment %} <table id="table1">
+                        <div class="areas">
+                            <i class="fa-solid fa-solar-panel fa-xl" style="color: rgb(67, 251, 67);"></i>
+                            <h1>Area 4</h1>
+                            <i class="fa fa-angle-down fa-2xl" id="show1" onclick="graph4()" style="color: rgb(8, 238, 54);cursor:pointer;
+                            position:absolute;right:180px;"></i>
+                        </div>
+                        <thead>
+                            <tr>
+                                <th>DC Voltage(V)</th>
+                                <th>AC Voltage(V)</th>
+                                <th>DC Current(A)</th>
+                                <th>AC Current(A)</th>
+                                <th>DC Power(kW)</th>
+                                <th>AC Power(kW)</th>
+                                <th>Energy Today(kWh)</th>
+                                <th>Current Status</th>
+                                <th>Irradiance Diagnosis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>136.7</td>
+                                <td>--</td>
+                                <td>15.3</td>
+                                <td>--</td>
+                                <td>2.1</td>
+                                <td>1.9</td>
+                                <td>5.6</td>
+                                <td>Normal</td>
+                                <td>Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="graph4" style="display:none ;">
+                        <div class="bottom1" id="chart4">
+                            <canvas id="myChart4"></canvas>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="back-frem">
+        <div class="back-change" onclick="background1()"><img src="{% static 'images/leaf.jpg' %}" alt="" srcset=""></div>
+        <div class="back-change" onclick="background2()"><img src="{% static 'images/space.jpg' %}" alt="" srcset=""></div>
+        <div class="back-change" onclick="background3()"><img src="{% static 'images/wind.jpg' %}" alt="" srcset=""></div>
+    </div>
+   
+
+    <!-- View History -->
+    <section id="viewall">
+        <div class="history">
+            <div class="heads">
+                <i id="arrow" class="fas fa-angle-double-right fa-2xl" onclick="Show(this);" style="color:#000 ;"></i>
+                <h2>View History</h2>
+            </div>
+            <div class="view" id="view" style="display: none;">
+                <!-- First Problem -->
+                <div class="card-header ">
+                    <h2>Area 1</h2>
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote ">
+                        <p>Cells were damaged</p>
+                        <footer class="blockquote-footer">New cells were fitted</footer>
+                    </blockquote>
+                </div>
+                <!-- Second Problem -->
+                <div class="card-header ">
+                    <h2>Area 2</h2>
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote ">
+                        <p>Small damage due to natural disaster</p>
+                        <footer class="blockquote-footer">Work was completed Sucessfully</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Main -->
+    <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
+	<script src="{% static 'js/plugins.js'%}"></script>
+    <script src="{% static 'js/app.js'%}"></script>
+    <script src="{% static 'js/table2excel.js'%}"></script>
+    <script src="{% static 'js/report.js'%}"></script>
+
+    <script>
+        function background1() {
+			document.getElementById('box1').style.background = "url('./static/images/leaf.jpg') center center / cover";
+		  }
+		
+		  function background2() {
+			document.getElementById('box1').style.background = "url('./static/images/space.jpg') center center / cover";
+		  }
+		
+		  function background3() {
+			document.getElementById('box1').style.background = "url('./static/images/wind.jpg') center center / cover";
+		  }
+    </script>
+</body>
+
+</html>
+
